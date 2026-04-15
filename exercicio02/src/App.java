@@ -26,17 +26,19 @@ public class App {
            System.out.println("[8]sair");
            System.out.println("informe o numero: ");
            opcao = scanner.nextInt();
+           scanner.nextLine();
            if(opcao == 8 ) break;
            boolean resultado = false;
+           boolean removido = false;
+           boolean encontrou = false;
             switch (opcao) {
                 case 1://cadastrar
-                    scanner.nextLine();
+                
                     System.out.println("Informe nome: ");
                     String nome = scanner.nextLine();
-                    System.out.print("Informe preco: ");
+                    System.out.println("Informe preco: ");
                     int preco = scanner.nextInt();
                     lista.add(new Produto(nome, preco));   
-                    scanner.nextLine();
                     break;
                 case 2://listar
                     if(lista.isEmpty()){
@@ -55,8 +57,8 @@ public class App {
                         System.out.println("cadastre 1 meu rei");
                     }
                     else{
+                        lista.sort(Comparator.comparing(Produto::getNome));
                         for(int i = 0; i < lista.size(); i++){
-                            lista.sort(Comparator.comparing(Produto::getNome));
                             System.out.println("nome: " + lista.get(i).getNome());
                             System.out.println("preco : "+ lista.get(i).getPreco());
                             System.out.println();
@@ -68,25 +70,32 @@ public class App {
                         System.out.println("cadastre 1 meu rei");
                     }
                     else{
-                        for(int i = 0; i < lista.size(); i++){
+                        
                         lista.sort(Comparator.comparing(Produto::getPreco));
-                        System.out.println("nome: " + lista.get(i).getNome());
-                        System.out.println("preco : "+ lista.get(i).getPreco());
-                        System.out.println();
+                        for(int i = 0; i < lista.size(); i++){
+                            System.out.println("nome: " + lista.get(i).getNome());
+                            System.out.println("preco : "+ lista.get(i).getPreco());
+                            System.out.println();
                         }
                     }
                     break;
                 case 5://mostrar maior 100
+                
                     if(lista.isEmpty()){
                         System.out.println("cadastre 1 meu rei");
                     }
                     else{
+                        
                         for(int i =0;i<lista.size();i++){
                             if(lista.get(i).getPreco()>100){
                                 System.out.println("nome: " + lista.get(i).getNome());
                                 System.out.println("preco : "+ lista.get(i).getPreco());
                                 System.out.println(); 
+                                encontrou = true;
                             }
+                        }
+                        if(!encontrou){
+                            System.out.println("nao existe maior que 100");
                         }
                     }
                     break;
@@ -111,7 +120,21 @@ public class App {
                 }
 
                     break;
-                case 7://mostrar maior 100
+                case 7://remover produto
+                    if(lista.isEmpty()){
+                        System.out.println("cadastre 1 meu rei");
+                    }
+                    else{
+                        System.out.println("informe o nome do produto que sera removido: ");
+                        String itemRemover = scanner.nextLine();
+                        removido = lista.removeIf(p -> p.getNome().equalsIgnoreCase(itemRemover));
+                        
+                        if(removido){
+                             System.out.println("Produto removido com sucesso!");
+                        } else {
+                             System.out.println("Produto não encontrado na lista.");
+                        }
+                    }
                     
                     break;
 
